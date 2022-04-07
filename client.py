@@ -13,17 +13,13 @@ client_socket.connect((host, port))  # connect to the server
 message = 'done'
 while True:
     try:
-        while True:
+        while message.lower().strip() != 'bye':
             client_socket.send(message.encode())  # send message
             data = client_socket.recv(1024).decode()  # receive response
             if data == 'click':
                 pg.click(x, y)
-                print("Clicked")
-
             elif data == 'del':
                 pg.typewrite(['backspace'])
-                print("Deleted Pressed")
-    
             elif data.startswith('cde:'):
                 pg.write(data.replace('cde:', ''))
             elif data=='rclick':

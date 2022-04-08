@@ -1,42 +1,41 @@
-# This file is used for sending the file over socket
+# This file will be used for recieving files over socket connection.
 import os
 import socket
 import time
 
-# Creating a socket.
+host = input("Host Name: ")
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.bind((socket.gethostname(), 22222))
-sock.listen(5)
-print("Host Name: ", sock.getsockname())
 
-# Accepting the connection.
-client, addr = sock.accept()
+# Trying to connect to socket.
+try:
+    sock.connect((host, 22222))
+    print("Connected Successfully")
+except:
+    print("Unable to connect")
+    exit(0)
 
-# Getting file details.
-file_name = input("File Name:")
-file_size = os.path.getsize(file_name)
+# Send file details.
+file_name = sock.recv(100).decode()
+file_size = sock.recv(100).decode()
 
-# Sending file_name and detail.
-client.send(file_name.encode())
-client.send(str(file_size).encode())
-
-# Opening file and sending data.
-with open(file_name, "rb") as file:
+# Opening and reading file.
+with open("./rec/" + file_name, "wb") as file:
     c = 0
     # Starting the time capture.
     start_time = time.time()
 
-    # Running loop while c != file_size.
-    while c <= file_size:
-        data = file.read(1024)
+    # Running the loop while file is recieved.
+    while c <= int(file_size):
+        data = sock.recv(1024)
         if not (data):
             break
-        client.sendall(data)
+        file.write(data)
         c += len(data)
 
     # Ending the time capture.
     end_time = time.time()
 
-print("File Transfer Complete.Total time: ", end_time - start_time)
-# Cloasing the socket.
+print("File transfer Complete.Total time: ", end_time - start_time)
+
+# Closing the socket.
 sock.close()

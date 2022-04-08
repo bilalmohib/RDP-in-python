@@ -17,6 +17,8 @@ def type_box():
     send_but.pack()
     nl_but.pack()
     tp_fr.mainloop()
+
+#This is the main code starting from here    
 port = randint(1000, 10000)
 k = tk.Tk()
 showinfo('Control Data','Host = '+socket.gethostbyname(socket.gethostname())+'\nPort = '+str(port))
@@ -44,8 +46,10 @@ print(10)
 cde = ''
 def a(o):
     conn.send('click'.encode())
+    print("Click button pressed")
 def r(o):
     conn.send('rclick'.encode())
+    print("Right Click Pressed")
 def d(o):
     conn.send('dclick'.encode())
 root.bind('<Control-l>', a)
@@ -54,8 +58,21 @@ root.bind('<Control-d>', d)
 menubar = tk.Menu(root)
 menubar.add_command(label="Type", command=type_box)
 root.config(menu = menubar)
+
+#################################### Screen Sharing Functionality #########################################
+#Code for the server
+from vidstream import StreamingServer
+import threading
+#Can find this using IPConfig in CMD
+myPrivateIPv4Address = '192.168.43.168'
+my_generated_port = port
+#Sending the data as parameters and saving them in receiver variable
+receiver = StreamingServer(myPrivateIPv4Address,my_generated_port)
+t = threading.Thread(target=receiver.start_server)
+t.start()
+while input("") != 'STOP':
+    continue
+receiver.stop_server()
+#################################### Screen Sharing Functionality #########################################
+
 root.mainloop()
-# Created by vismodo: https://github.com/vismodo/
-# Email: vismaya.atreya@outlook.com
-# Repository: https://github.com/vismodo/Remote-Desktop (Remote Desktop)
-# Python Version: 3.9

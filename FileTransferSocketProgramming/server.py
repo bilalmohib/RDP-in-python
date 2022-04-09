@@ -16,6 +16,9 @@ client, addr = sock.accept()
 file_name = input("File Name:")
 file_size = os.path.getsize(file_name)
 
+print("File Size is equal to : " )
+print(file_size)
+
 # Sending file_name and detail.
 client.send(file_name.encode())
 client.send(str(file_size).encode())

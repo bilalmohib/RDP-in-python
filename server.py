@@ -45,13 +45,13 @@ root.bind('<Motion>', motion)
 print(10)
 cde = ''
 def a(o):
-    conn.send('click'.encode())
+    conn.send('c'.encode())
     print("Click button pressed")
 def r(o):
-    conn.send('rclick'.encode())
+    conn.send('r'.encode())
     print("Right Click Pressed")
 def d(o):
-    conn.send('dclick'.encode())
+    conn.send('d'.encode())
 root.bind('<Control-l>', a)
 root.bind('<Control-r>', r)
 root.bind('<Control-d>', d)
